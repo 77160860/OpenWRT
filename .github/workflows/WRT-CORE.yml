@@ -226,11 +226,8 @@ jobs:
           tag_name: ${{env.WRT_TARGET}}_${{env.WRT_VER}}_${{env.WRT_DATE}}
           files: ./wrt/upload/*.*
           body: |
-            这是个平台固件包，内含多个设备！
-            请注意选择你需要的设备固件！
-            不要问，刷就完事了！
-
-            全系带开源硬件加速，别问了！
+          
+            带开源硬件加速！
 
             WIFI名称：${{env.WRT_SSID}}
             WIFI密码：${{env.WRT_WORD}}
