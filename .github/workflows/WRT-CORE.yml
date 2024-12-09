@@ -227,7 +227,7 @@ jobs:
           files: ./wrt/upload/*.*
           body: |
           
-            带开源硬件加速！
+            NSS硬件加速！
 
             WIFI名称：${{env.WRT_SSID}}
             WIFI密码：${{env.WRT_WORD}}
