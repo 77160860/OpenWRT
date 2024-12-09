@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       #max-parallel: 3
       matrix:
-        TARGET: [IPQ60XX-WIFI-YES,  IPQ807X-WIFI-YES]
+        TARGET: [360v6,  ax3600]
         SOURCE: [VIKINGYFY/immortalwrt]
         BRANCH: [main]
 
