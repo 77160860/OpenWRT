@@ -1,7 +1,7 @@
 #科学插件调整
 CONFIG_PACKAGE_luci-app-homeproxy=n
-CONFIG_PACKAGE_luci-app-mihomo=n
-CONFIG_PACKAGE_luci-app-openclash=y
+CONFIG_PACKAGE_luci-app-mihomo=y
+CONFIG_PACKAGE_luci-app-openclash=n
 #增加插件
 CONFIG_PACKAGE_luci-app-samba4=n
 CONFIG_PACKAGE_luci-app-cpufreq=y
@@ -12,7 +12,7 @@ CONFIG_PACKAGE_luci-app-advancedplus=n
 CONFIG_PACKAGE_luci-theme-kucat=n
 CONFIG_PACKAGE_luci-app-mosdns=y
 CONFIG_PACKAGE_luci-theme-bootstrap=y
-CONFIG_PACKAGE_luci-theme-alist=n
+CONFIG_PACKAGE_luci-theme-alist=y
 #删除插件
 CONFIG_PACKAGE_luci-app-wol=n
 CONFIG_PACKAGE_luci-app-ddns=n
