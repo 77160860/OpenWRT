@@ -233,6 +233,8 @@ jobs:
             WIFI密码：${{env.WRT_WORD}}
 
             源码：${{env.WRT_REPO}}
+            分支：${{env.WRT_BRANCH}}
             平台：${{env.WRT_TARGET}}
+            设备：${{env.WRT_TYPE}}
             地址：${{env.WRT_IP}}
             密码：${{env.WRT_PW}}
