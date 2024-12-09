@@ -12,7 +12,7 @@ CONFIG_PACKAGE_luci-app-advancedplus=n
 CONFIG_PACKAGE_luci-theme-kucat=n
 CONFIG_PACKAGE_luci-app-mosdns=y
 CONFIG_PACKAGE_luci-theme-bootstrap=y
-CONFIG_PACKAGE_luci-theme-alist=y
+CONFIG_PACKAGE_luci-app-alist=y
 #删除插件
 CONFIG_PACKAGE_luci-app-wol=n
 CONFIG_PACKAGE_luci-app-ddns=n
