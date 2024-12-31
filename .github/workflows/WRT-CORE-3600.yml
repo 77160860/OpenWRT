@@ -170,7 +170,7 @@ jobs:
 
           cat $GITHUB_WORKSPACE/Config/$WRT_TARGET.txt $GITHUB_WORKSPACE/Config/GENERAL3600.txt >> .config
 
-          $GITHUB_WORKSPACE/Scripts/Settings.sh
+          $GITHUB_WORKSPACE/Scripts/Settings3600.sh
 
           make defconfig -j$(nproc)
 
