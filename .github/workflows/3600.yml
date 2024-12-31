@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       #max-parallel: 3
       matrix:
-        TARGET: [3600]
+        TARGET: [360, 3600]
         SOURCE: [77160860/immortalwrt]
         BRANCH: [main]
 
