@@ -33,8 +33,8 @@ jobs:
       #max-parallel: 3
       matrix:
         TARGET: [360, 3600]
-        SOURCE: [LiBwrt/openwrt-6.x]
-        BRANCH: [kernel-6.12]
+        SOURCE: [VIKINGYFY/immortalwrt]
+        BRANCH: [main]
 
     #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/WRT-CORE-3600.yml
