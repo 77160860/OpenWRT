@@ -3,6 +3,11 @@ name: 3600
 
 #CI计划
 on:
+  #自动编译：当Auto-Clean运行完成后
+  workflow_run:
+    workflows: ["Auto-Clean"]
+    types:
+      - completed
   #手动编译
   workflow_dispatch:
     inputs:
@@ -31,7 +36,7 @@ jobs:
         SOURCE: [VIKINGYFY/immortalwrt]
         BRANCH: [main]
 
-    #调用公用编译核心WRT-CORE-3600.yml
+    #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/WRT-CORE-3600.yml
     with:
       #编译平台
