@@ -33,7 +33,7 @@ jobs:
       #max-parallel: 3
       matrix:
         TARGET: [360, 3600]
-        SOURCE: [VIKINGYFY/immortalwrt]
+        SOURCE: [LiBwrt/openwrt-6.x]
         BRANCH: [main]
 
     #调用公用编译核心WRT-CORE.yml
