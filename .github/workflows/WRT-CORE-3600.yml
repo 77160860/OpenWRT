@@ -63,17 +63,6 @@ jobs:
       - name: Checkout Projects
         uses: actions/checkout@main
 
-      - name: Free Disk Space
-        uses: FirelightFlagboy/gh-runner-free-disk-space@main
-        with:
-          android: true
-          dotnet: true
-          haskell: true
-          docker-images: true
-          large-packages: true
-          swap-storage: true
-          tool-cache: true
-
       - name: Initialization Environment
         env:
           DEBIAN_FRONTEND: noninteractive
@@ -88,7 +77,7 @@ jobs:
           sudo -E systemctl daemon-reload
           sudo -E timedatectl set-timezone "Asia/Shanghai"
 
-          mkdir -p /mnt/wrt_build
+          sudo mkdir -p /mnt/wrt_build
           sudo chown $USER:$USER /mnt/wrt_build
           ln -s /mnt/wrt_build $GITHUB_WORKSPACE/wrt
 
