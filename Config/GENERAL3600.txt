@@ -1,5 +1,5 @@
 #科学插件调整
-CONFIG_USE_APK=y
+CONFIG_USE_APK=n
 CONFIG_PACKAGE_jq=y
 CONFIG_PACKAGE_unzip=y
 CONFIG_PACKAGE_coreutils=y
