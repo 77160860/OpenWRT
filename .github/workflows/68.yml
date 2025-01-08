@@ -32,7 +32,7 @@ jobs:
       fail-fast: false
       #max-parallel: 3
       matrix:
-        TARGET: [IPQ360, IPQ3600]
+        TARGET: [IPQ6, IPQ8]
         SOURCE: [LiBwrt/openwrt-6.x]
         BRANCH: [kernel-6.12]
 
