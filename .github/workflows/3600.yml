@@ -36,7 +36,7 @@ jobs:
         SOURCE: [VIKINGYFY/immortalwrt]
         BRANCH: [main]
 
-    #调用公用编译核心WRT-CORE.yml
+    #调用公用编译核心WRT-CORE-3600.yml
     uses: ./.github/workflows/WRT-CORE-3600.yml
     with:
       #编译平台
