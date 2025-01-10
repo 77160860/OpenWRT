@@ -1,5 +1,5 @@
 #CI项目
-name: 3600
+name: kernel-6.12
 
 #CI计划
 on:
