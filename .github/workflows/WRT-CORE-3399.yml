@@ -1,5 +1,5 @@
 #云编译公用核心
-name: WRT-CORE-3600
+name: WRT-CORE-3399
 
 on:
   workflow_call:
