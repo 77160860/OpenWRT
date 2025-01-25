@@ -1,4 +1,4 @@
-#Fine3399
+#rockchip
 CONFIG_TARGET_rockchip=y
 CONFIG_TARGET_rockchip_armv8=y
 #设备列表
