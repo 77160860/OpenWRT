@@ -33,7 +33,7 @@ jobs:
       #max-parallel: 3
       matrix:
         TARGET: [Fine3399]
-        SOURCE: [77160860/lede]
+        SOURCE: [coolsnowwolf/lede]
         BRANCH: [master]
 
     #调用公用编译核心WRT-CORE-3399.yml
