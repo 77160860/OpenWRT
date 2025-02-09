@@ -235,7 +235,6 @@ jobs:
           tag_name: ${{env.WRT_TARGET}}_${{env.WRT_VER}}_${{env.WRT_DATE}}
           files: ./wrt/upload/*.*
           body: |
-
             开源硬件加速！
 
             内核版本：${{env.WRT_KVER}}
