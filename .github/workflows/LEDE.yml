@@ -36,7 +36,7 @@ jobs:
         SOURCE: [coolsnowwolf/lede]
         BRANCH: [master]
 
-    #调用公用编译核心WRT-CORE.yml
+    #调用公用编译核心WRT-CORE-3399.yml
     uses: ./.github/workflows/WRT-CORE-3399.yml
     with:
       #编译配置
