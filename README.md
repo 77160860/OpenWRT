@@ -1,7 +1,7 @@
 # OpenWRT-CI
 云编译OpenWRT固件
 
-高通平台NSS硬件加速！
+IPQ/MTK硬件加速！
 
 # 固件简要说明：
 
