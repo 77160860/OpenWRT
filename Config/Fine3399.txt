@@ -31,9 +31,9 @@ CONFIG_PACKAGE_kmod-mt792x-common=n
 CONFIG_PACKAGE_kmod-mt7915-firmware=n
 CONFIG_PACKAGE_kmod-mt7916-firmware=n
 CONFIG_PACKAGE_kmod-mt7921-firmware=n
-CONFIG_PACKAGE_kmod-mt7922-firmware=n
+CONFIG_PACKAGE_kmod-mt7922-firmware=y
 CONFIG_PACKAGE_kmod-mt7925-firmware=n
-CONFIG_PACKAGE_wpad-openssl=n
+CONFIG_PACKAGE_wpad-openssl=y
 #BCM43430b0驱动
 #CONFIG_PACKAGE_brcmfmac-firmware-43430b0-sdio=y
 #CONFIG_PACKAGE_brcmfmac-nvram-43430b0-sdio=y
