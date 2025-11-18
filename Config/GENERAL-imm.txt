@@ -3,7 +3,6 @@ CONFIG_USE_APK=n
 CONFIG_PACKAGE_luci-compat=y
 CONFIG_PACKAGE_luci-mod-rpc=y
 CONFIG_PACKAGE_luci-lib-ipkg=y
-CONFIG_PACKAGE_libudev-zero=y
 CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_luci-app-store=y
