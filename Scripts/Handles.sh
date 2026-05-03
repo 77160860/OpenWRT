@@ -47,6 +47,15 @@ if [ -d "luci-theme-argon" ]; then
 	cd "$PKG_PATH" && echo "theme-argon has been fixed!"
 fi
 
+#修改mini-diskmanager菜单位置
+if [ -d *"luci-app-mini-diskmanager"* ]; then
+	echo " " && cd ./luci-app-mini-diskmanager/
+
+	sed -i "s/services/system/g" ./luci-app-mini-diskmanager/root/usr/share/luci/menu.d/luci-app-mini-diskmanager.json
+
+	cd $PKG_PATH && echo "mini-diskmanager has been fixed!"
+fi
+
 #修改qca-nss-drv启动顺序
 NSS_DRV="../feeds/nss_packages/qca-nss-drv/files/qca-nss-drv.init"
 if [ -f "$NSS_DRV" ]; then
@@ -85,27 +94,4 @@ if [ -f "$RUST_FILE" ]; then
 	sed -i 's/ci-llvm=true/ci-llvm=false/g' $RUST_FILE
 
 	cd $PKG_PATH && echo "rust has been fixed!"
-fi
-
-#修复DiskMan编译失败
-DM_FILE="./luci-app-diskman/applications/luci-app-diskman/Makefile"
-if [ -f "$DM_FILE" ]; then
-	echo " "
-
-	sed -i 's/fs-ntfs/fs-ntfs3/g' $DM_FILE
-	sed -i '/ntfs-3g-utils /d' $DM_FILE
-
-	cd $PKG_PATH && echo "diskman has been fixed!"
-fi
-
-#修复luci-app-netspeedtest相关问题
-if [ -d *"luci-app-netspeedtest"* ]; then
-	echo " "
-
-	cd ./luci-app-netspeedtest/
-
-	sed -i '$a\exit 0' ./netspeedtest/files/99_netspeedtest.defaults
-	sed -i 's/ca-certificates/ca-bundle/g' ./speedtest-cli/Makefile
-
-	cd $PKG_PATH && echo "netspeedtest has been fixed!"
 fi
