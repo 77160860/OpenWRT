@@ -91,7 +91,7 @@ CONFIG_PACKAGE_kmod-usb-ohci=n
 CONFIG_PACKAGE_kmod-usb-uhci=n
 CONFIG_PACKAGE_kmod-usb-xhci=y
 CONFIG_PACKAGE_kmod-veth=n
-CONFIG_PACKAGE_kmod-wireguard=y
+CONFIG_PACKAGE_kmod-wireguard=n
 #组件调整
 CONFIG_PACKAGE_xz-utils=y
 CONFIG_PACKAGE_zoneinfo-asia=y
