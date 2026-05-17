@@ -59,6 +59,7 @@ UPDATE_PACKAGE "luci-app-store" "linkease/istore" "main"
 #UPDATE_PACKAGE "luci-app-store" "kenzok8/small-package" "main" "pkg"
 #UPDATE_PACKAGE "luci-app-oaf" "destan19/OpenAppFilter" "master"
 UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
+UPDATE_PACKAGE "luci-app-lanspeed" "qimaoww/luci-app-lanspeed" "master"
 
 UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
