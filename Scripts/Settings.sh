@@ -40,7 +40,7 @@ sed -i 's/HWE/NPU/g' target/linux/qualcommax/base-files/sbin/cpuusage
 SYSTEM_JS="feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js"
 if [ -f "$SYSTEM_JS" ]; then
     echo "清理WebUI固件版本中的LuCI后缀"
-    sed -i "s/',\s*'\s*\/[[:space:]]*LuCI[^']*//g" "$SYSTEM_JS"
+    sed -i "s/\(firmware:[[:space:]]*'\)[^']*\/[[:space:]]*LuCI[^']*'/\\1'/" "$SYSTEM_JS"
 fi
 CFG_FILE="./package/base-files/files/bin/config_generate"
 #修改默认IP地址
