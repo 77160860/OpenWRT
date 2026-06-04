@@ -1,7 +1,7 @@
 #自用插件
 CONFIG_USE_APK=n
 CONFIG_PACKAGE_luci-mod-rpc=y
-CONFIG_PACKAGE_luci-app-ttyd=y
+CONFIG_PACKAGE_luci-app-ttyd=n
 CONFIG_PACKAGE_luci-app-store=y
 #科学插件调整
 CONFIG_PACKAGE_luci-app-momo=y
