@@ -39,7 +39,7 @@ sed -i 's/ECM://g' target/linux/qualcommax/base-files/sbin/cpuusage
 sed -i 's/HWE/NPU/g' target/linux/qualcommax/base-files/sbin/cpuusage
 # MTK去掉ppe1
 sed -i 's|for ppe in /sys/kernel/debug/ppe\*/entries; do|for ppe in /sys/kernel/debug/ppe0/entries; do|' target/linux/mediatek/filogic/base-files/sbin/cpuusage
-sed -i 's|name="$(basename "$(dirname "$ppe")" | tr '\''a-z'\'' '\''A-Z'\'')"|name="PPE"|' target/linux/mediatek/filogic/base-files/sbin/cpuusage
+sed -i 's|name=.*|	name="PPE"|' target/linux/mediatek/filogic/base-files/sbin/cpuusage
 #去掉luci后缀
 sed -i "s#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description : ''),#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 CFG_FILE="./package/base-files/files/bin/config_generate"
