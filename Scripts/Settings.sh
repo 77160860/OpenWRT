@@ -37,6 +37,9 @@ sed -i '38,47d' feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/
 rm -rf feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/25_storage.js
 sed -i 's/ECM://g' target/linux/qualcommax/base-files/sbin/cpuusage
 sed -i 's/HWE/NPU/g' target/linux/qualcommax/base-files/sbin/cpuusage
+# MTK去掉ppe1
+sed -i 's/PPE0:/PPE:/g' target/linux/mediatek/filogic/base-files/sbin/cpuusage
+sed -i 's/ PPE1:.*//g' target/linux/mediatek/filogic/base-files/sbin/cpuusage
 #去掉luci后缀
 sed -i "s#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description : ''),#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
 CFG_FILE="./package/base-files/files/bin/config_generate"
