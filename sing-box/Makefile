@@ -6,7 +6,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sing-box
-PKG_VERSION:=custom
+PKG_VERSION:=1.14.0
 PKG_RELEASE:=1
 
 # 1. 设置下载的文件名
