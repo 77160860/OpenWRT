@@ -1,5 +1,5 @@
 #自用插件
-#CONFIG_USE_APK=n
+CONFIG_USE_APK=n
 CONFIG_PACKAGE_luci-mod-rpc=y
 CONFIG_PACKAGE_luci-app-ttyd=n
 CONFIG_PACKAGE_luci-app-store=y
