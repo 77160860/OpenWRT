@@ -4,9 +4,8 @@ PKG_NAME:=yq
 PKG_VERSION:=4.52.5
 PKG_RELEASE:=1
 
-PKG_SOURCE:=yq_linux_arm64
-PKG_SOURCE_URL:=https://github.com/mikefarah/yq/releases/download/v$(PKG_VERSION)/
-PKG_HASH:=90fa510c50ee8ca75544dbfffed10c88ed59b36834df35916520cddc623d9aaa
+PKG_SOURCE:=yq
+PKG_SOURCE_URL:=https://raw.githubusercontent.com/77160860/OpenWRT/refs/heads/main/yq/
 
 PKG_MAINTAINER:=Tianling Shen <cnsztl@immortalwrt.org>
 PKG_LICENSE:=MIT
