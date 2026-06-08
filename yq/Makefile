@@ -14,16 +14,16 @@ PKG_MAINTAINER:=Custom Build
 include $(INCLUDE_DIR)/package.mk
 
 define Package/yq
-  SECTION:=utils
-  CATEGORY:=Utilities
-  TITLE:=Portable command-line YAML processor
-  URL:=https://github.com/mikefarah/yq
-  DEPENDS:=@aarch64
+    SECTION:=utils
+    CATEGORY:=Utilities
+    TITLE:=Portable command-line YAML processor
+    URL:=https://github.com/mikefarah/yq
+    DEPENDS:=@aarch64
 endef
 
 define Package/yq/description
-  yq pre-compiled binary for ARM64.
-  Downloaded from mikefarah/yq releases.
+    yq pre-compiled binary for ARM64.
+    Downloaded from mikefarah/yq releases.
 endef
 
 define Build/Prepare
