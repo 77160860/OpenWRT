@@ -60,6 +60,7 @@ UPDATE_PACKAGE "sing-box" "77160860/OpenWRT" "main" "pkg"
 UPDATE_PACKAGE "luci-app-store" "linkease/istore" "main"
 #UPDATE_PACKAGE "luci-app-oaf" "destan19/OpenAppFilter" "master"
 UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
+UPDATE_PACKAGE "luci-app-podman" "Zerogiven-OpenWRT-Packages/luci-app-podman" "main"
 
 UPDATE_PACKAGE "ddns-go" "sirpdboy/luci-app-ddns-go" "main"
 #UPDATE_PACKAGE "diskman" "lisaac/luci-app-diskman" "master"
