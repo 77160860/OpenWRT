@@ -16,7 +16,7 @@ CONFIG_PACKAGE_luci-app-openclash=n
 CONFIG_PACKAGE_luci-app-homeproxy=n
 CONFIG_PACKAGE_luci-app-passwall2=n
 #增加插件
-CONFIG_PACKAGE_luci-app-partexp=y
+CONFIG_PACKAGE_luci-app-partexp=n
 CONFIG_PACKAGE_luci-app-wolplus=y
 CONFIG_PACKAGE_luci-app-cpufreq=n
 CONFIG_PACKAGE_luci-app-autoreboot=y
