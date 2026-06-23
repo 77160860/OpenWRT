@@ -1,5 +1,5 @@
 #CI项目
-name: OWRT-6.12.80
+name: OWRT-6.12.88
 
 #CI计划
 on:
@@ -34,7 +34,7 @@ jobs:
       matrix:
         CONFIG: [MEDIATEK, ROCKCHIP]
         SOURCE: [77160860/immortalwrt]
-        BRANCH: [mtk6.12.80]
+        BRANCH: [mtk6.12.88]
 
     #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/WRT-CORE.yml
