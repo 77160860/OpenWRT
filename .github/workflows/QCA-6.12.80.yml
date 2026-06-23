@@ -1,5 +1,5 @@
 #CI项目
-name: QCA-6.12.88
+name: QCA-6.12.80
 
 #CI计划
 on:
@@ -34,7 +34,7 @@ jobs:
       matrix:
         CONFIG: [IPQ60XX, IPQ807X]
         SOURCE: [77160860/immortalwrt]
-        BRANCH: [nss6.12.88]
+        BRANCH: [nss6.12.80]
 
     #调用公用编译核心WRT-CORE.yml
     uses: ./.github/workflows/WRT-CORE.yml
