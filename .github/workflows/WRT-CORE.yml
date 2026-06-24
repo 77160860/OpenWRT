@@ -108,18 +108,18 @@ jobs:
         run: |
           cd ./wrt/
           
-          # 1. 自动获取 6.12.88 的 SHA256 哈希值（官方 cdn.kernel.org）
+          # 1. 自动获取 6.12.88 的 SHA256 哈希值
           KERNEL_HASH=$(curl -s https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc | grep linux-6.12.88.tar.xz | awk '{print $1}')
           echo "Target Kernel Hash: $KERNEL_HASH"
           
-          # 2. 修改版本号
-          sed -i 's/LINUX_VERSION-6.12 = .*/LINUX_VERSION-6.12 = .88/' include/kernel-6.12
+          # 2. 修改版本号（注意路径改为新位置）
+          sed -i 's/LINUX_VERSION-6.12 = .*/LINUX_VERSION-6.12 = .88/' target/linux/generic/kernel-6.12
           
-          # 3. 替换哈希值
-          sed -i "s/LINUX_KERNEL_HASH-6.12.[0-9]* = .*/LINUX_KERNEL_HASH-6.12.88 = $KERNEL_HASH/" include/kernel-6.12
+          # 3. 替换哈希值（精准匹配当前 .93 的那一行）
+          sed -i "s/LINUX_KERNEL_HASH-6.12.[0-9]* = .*/LINUX_KERNEL_HASH-6.12.88 = $KERNEL_HASH/" target/linux/generic/kernel-6.12
           
           # 4. 确认修改成功
-          cat include/kernel-6.12 | grep -E "(LINUX_VERSION|LINUX_KERNEL_HASH)"
+          cat target/linux/generic/kernel-6.12 | grep -E "(LINUX_VERSION|LINUX_KERNEL_HASH)"
 
 
       - name: Check Scripts
