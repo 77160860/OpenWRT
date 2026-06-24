@@ -89,7 +89,8 @@ jobs:
           echo "WRT_MARK=${GITHUB_REPOSITORY%%/*}" >> $GITHUB_ENV
           echo "WRT_INFO=${WRT_SOURCE%%/*}" >> $GITHUB_ENV
           echo "WRT_TARGET=$(grep -m 1 -oP '^CONFIG_TARGET_\K[\w]+(?=\=y)' ./Config/$WRT_CONFIG.txt)" >> $GITHUB_ENV
-          echo "WRT_KVER=none" >> $GITHUB_ENV
+          echo "WRT_KVER=6.12.88" >> $GITHUB_ENV
+          echo "WRT_BRANCH=6.12" >> $GITHUB_ENV
           echo "WRT_LIST=none" >> $GITHUB_ENV
 
       - name: Clone Code
@@ -112,14 +113,19 @@ jobs:
           KERNEL_HASH=$(curl -s https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc | grep linux-6.12.88.tar.xz | awk '{print $1}')
           echo "Target Kernel Hash: $KERNEL_HASH"
           
-          # 2. 修改版本号（注意路径改为新位置）
+          # 2. 修改版本号
           sed -i 's/LINUX_VERSION-6.12 = .*/LINUX_VERSION-6.12 = .88/' target/linux/generic/kernel-6.12
           
-          # 3. 替换哈希值（精准匹配当前 .93 的那一行）
+          # 3. 替换哈希值
           sed -i "s/LINUX_KERNEL_HASH-6.12.[0-9]* = .*/LINUX_KERNEL_HASH-6.12.88 = $KERNEL_HASH/" target/linux/generic/kernel-6.12
           
-          # 4. 确认修改成功
+          # 4. 强制修改平台配置文件
+          sed -i "s/6\.18/6.12/g" target/linux/generic/config-6.18
+          sed -i "s/6\.18/6.12/g" target/linux/generic/config-6.18.default
+          
+          # 5. 确认修改成功
           cat target/linux/generic/kernel-6.12 | grep -E "(LINUX_VERSION|LINUX_KERNEL_HASH)"
+          echo "=== 内核已强制改成 6.12.88 ==="
 
 
       - name: Check Scripts
