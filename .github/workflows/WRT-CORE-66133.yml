@@ -95,7 +95,6 @@ jobs:
       - name: Clone Code
         run: |
           git clone --depth=1 --single-branch --branch $WRT_BRANCH $WRT_REPO ./wrt/
-
           cd ./wrt/ && echo "WRT_HASH=$(git log -1 --pretty=format:'%h')" >> $GITHUB_ENV
 
           # GitHub Action 移除国内下载源
@@ -103,6 +102,12 @@ jobs:
           if [ -f "$PROJECT_MIRRORS_FILE" ]; then
             sed -i '/.cn\//d; /tencent/d; /aliyun/d' "$PROJECT_MIRRORS_FILE"
           fi
+
+      - name: Fix script permissions
+        run: |
+          cd wrt
+          chmod -R +x scripts/ tools/ toolchain/
+          find ./ -type f \( -name "*.sh" -o -name "*.pl" -o -name "configure" \) -exec chmod +x {} \;
 
       - name: Check Scripts
         run: |
