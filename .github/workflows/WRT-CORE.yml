@@ -119,26 +119,22 @@ jobs:
           
           # 3. 强制修改目标平台 (qualcommax) 的 Makefile，使其指向 6.12 内核
           if [ -f "target/linux/$WRT_TARGET/Makefile" ]; then
-            sed -i 's/KERNEL_PATCHVER\s*:=\s*.*/KERNEL_PATCHVER:=6.12/' target/linux/$WRT_TARGET/Makefile
-            sed -i 's/KERNEL_PATCHVER\s*=\s*.*/KERNEL_PATCHVER:=6.12/' target/linux/$WRT_TARGET/Makefile
+            sed -i 's/KERNEL_PATCHVER\s*:=\s*.*/KERNEL_PATCHVER:=6.12/g' target/linux/$WRT_TARGET/Makefile
+            sed -i 's/KERNEL_PATCHVER\s*=\s*.*/KERNEL_PATCHVER:=6.12/g' target/linux/$WRT_TARGET/Makefile
             echo "=== 已成功修改 target/linux/$WRT_TARGET/Makefile ==="
             cat target/linux/$WRT_TARGET/Makefile | grep KERNEL_PATCHVER
           fi
           
-          # 4. 核心安全锁：如果目标平台缺少 config-6.12，则自动从 6.18 复制并转换
-          if [ ! -f "target/linux/$WRT_TARGET/config-6.12" ]; then
-            echo "config-6.12 不存在，正在从 config-6.18 复制并自动转换..."
-            cp target/linux/$WRT_TARGET/config-6.18 target/linux/$WRT_TARGET/config-6.12
-            sed -i 's/6\.18/6\.12/g' target/linux/$WRT_TARGET/config-6.12
-          fi
-
-          # 5. 补丁安全锁：如果目标平台缺少 patches-6.12，则自动复制 patches-6.18
-          if [ ! -d "target/linux/$WRT_TARGET/patches-6.12" ] && [ -d "target/linux/$WRT_TARGET/patches-6.18" ]; then
-            echo "patches-6.12 不存在，正在复制 patches-6.18 作为替代..."
-            cp -r target/linux/$WRT_TARGET/patches-6.18 target/linux/$WRT_TARGET/patches-6.12
+          # 4. 强制修改本地 Config 文件夹下的种子配置文件，将 6.18 替换为 6.12
+          sed -i 's/CONFIG_LINUX_6_18=y/CONFIG_LINUX_6_12=y/g' $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt
+          sed -i 's/CONFIG_KERNEL_PATCHVER="6.18"/CONFIG_KERNEL_PATCHVER="6.12"/g' $GITHUB_WORKSPACE/Config/$WRT_CONFIG.txt
+          
+          if [ -f "$GITHUB_WORKSPACE/Config/GENERAL.txt" ]; then
+            sed -i 's/CONFIG_LINUX_6_18=y/CONFIG_LINUX_6_12=y/g' $GITHUB_WORKSPACE/Config/GENERAL.txt
+            sed -i 's/CONFIG_KERNEL_PATCHVER="6.18"/CONFIG_KERNEL_PATCHVER="6.12"/g' $GITHUB_WORKSPACE/Config/GENERAL.txt
           fi
           
-          # 6. 确认修改成功
+          # 5. 确认修改成功
           cat target/linux/generic/kernel-6.12 | grep -E "(LINUX_VERSION|LINUX_KERNEL_HASH)"
           echo "=== 内核已成功切换并降级为 6.12.88 ==="
 
