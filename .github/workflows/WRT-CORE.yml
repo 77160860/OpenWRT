@@ -142,7 +142,6 @@ jobs:
         run: |
           find ./ -maxdepth 3 -type f -iregex ".*\(txt\|sh\)$" -exec dos2unix {} \; -exec chmod +x {} \;
 
-      # 【已修正】加入内核版本隔离缓存，防止 6.18 缓存污染 6.12 编译
       - name: Check Caches
         id: check-cache
         if: env.WRT_TEST != 'true'
@@ -151,7 +150,6 @@ jobs:
           key: ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_KVER}}-${{env.WRT_HASH}}
           restore-keys: |
             ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-${{env.WRT_KVER}}-
-            ${{env.WRT_CONFIG}}-${{env.WRT_INFO}}-
           path: |
             ./wrt/.ccache
             ./wrt/staging_dir/host*
