@@ -11,7 +11,7 @@ PKG_RELEASE:=1
 
 # 1. 设置下载的文件名
 PKG_SOURCE:=sing-box-arm64
-# 2. 设置下载地址 (OpenWrt 会自动拼接文件名)
+# 2. 设置下载地址
 PKG_SOURCE_URL:=https://github.com/77160860/proxy/releases/download/singbox/
 # 3. 跳过 Hash 校验
 PKG_HASH:=skip
