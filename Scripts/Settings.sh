@@ -88,29 +88,18 @@ fi
 GENERIC_CONFIG="target/linux/generic/config-6.18"
 if [ -f "$GENERIC_CONFIG" ]; then
     echo "正在配置ZSTD及LZ4支持..."
-    # 清理所有可能冲突的旧配置项
     sed -i '/CONFIG_ZRAM/d' $GENERIC_CONFIG
     sed -i '/CONFIG_ZSMALLOC/d' $GENERIC_CONFIG
-    sed -i '/CONFIG_CRYPTO_ZSTD/d' $GENERIC_CONFIG
     sed -i '/CONFIG_CRYPTO_LZ4/d' $GENERIC_CONFIG
-    # 写入新的 ZRAM + ZSTD + LZ4 配置
     echo "CONFIG_ZRAM=y" >> $GENERIC_CONFIG
     echo "CONFIG_ZSMALLOC=y" >> $GENERIC_CONFIG
-    # 启用 ZSTD 和 LZ4 作为 ZRAM 后端
-    echo "CONFIG_ZRAM_BACKEND_ZSTD=y" >> $GENERIC_CONFIG
     echo "CONFIG_ZRAM_BACKEND_LZ4=y" >> $GENERIC_CONFIG
-    # 默认算法设为lz4（你可以根据需要改为zstd）
     echo "CONFIG_ZRAM_DEF_COMP_LZ4=y" >> $GENERIC_CONFIG
     echo 'CONFIG_ZRAM_DEF_COMP="lz4"' >> $GENERIC_CONFIG
-    # 启用内核 Crypto API 的 ZSTD 和 LZ4 支持
-    echo "CONFIG_CRYPTO_ZSTD=y" >> $GENERIC_CONFIG
     echo "CONFIG_CRYPTO_LZ4=y" >> $GENERIC_CONFIG
-    # 启用底层压缩/解压库
-    echo "CONFIG_ZSTD_COMPRESS=y" >> $GENERIC_CONFIG
-    echo "CONFIG_ZSTD_DECOMPRESS=y" >> $GENERIC_CONFIG
     echo "CONFIG_LZ4_COMPRESS=y" >> $GENERIC_CONFIG
     echo "CONFIG_LZ4_DECOMPRESS=y" >> $GENERIC_CONFIG
-    echo "ZSTD及LZ4已应用至 $GENERIC_CONFIG"
+    echo "LZ4已应用至 $GENERIC_CONFIG"
 else
     echo "跳过:未找到配置文件 $GENERIC_CONFIG"
 fi
