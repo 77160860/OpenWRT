@@ -84,26 +84,4 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 		echo "qualcommax set up nowifi successfully!"
 	fi
 fi
-#ZRAM开启ZSTD和LZ4算法
-GENERIC_CONFIG="target/linux/generic/config-6.18"
-if [ -f "$GENERIC_CONFIG" ]; then
-    echo "正在配置ZSTD及LZ4支持..."
-    sed -i '/CONFIG_ZRAM/d' $GENERIC_CONFIG
-    sed -i '/CONFIG_ZSMALLOC/d' $GENERIC_CONFIG
-    sed -i '/CONFIG_CRYPTO_LZ4/d' $GENERIC_CONFIG
-    echo "CONFIG_ZRAM=y" >> $GENERIC_CONFIG
-    echo "CONFIG_ZSMALLOC=y" >> $GENERIC_CONFIG
-    echo "CONFIG_ZRAM_BACKEND_LZ4=y" >> $GENERIC_CONFIG
-    echo "CONFIG_ZRAM_DEF_COMP_LZ4=y" >> $GENERIC_CONFIG
-    echo 'CONFIG_ZRAM_DEF_COMP="lz4"' >> $GENERIC_CONFIG
-    echo "CONFIG_CRYPTO_LZ4=y" >> $GENERIC_CONFIG
-    echo "CONFIG_LZ4_COMPRESS=y" >> $GENERIC_CONFIG
-    echo "CONFIG_LZ4_DECOMPRESS=y" >> $GENERIC_CONFIG
-    echo "LZ4已应用至 $GENERIC_CONFIG"
-else
-    echo "跳过:未找到配置文件 $GENERIC_CONFIG"
-fi
-# 禁用zram自启
-mkdir -p files/etc/uci-defaults
-echo "/etc/init.d/zram disable" > files/etc/uci-defaults/99-disable-zram
-chmod +x files/etc/uci-defaults/99-disable-zram
+
