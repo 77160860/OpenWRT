@@ -85,3 +85,7 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 	fi
 fi
 
+# 禁用zram自启
+mkdir -p files/etc/uci-defaults
+echo "/etc/init.d/zram disable" > files/etc/uci-defaults/99-disable-zram
+chmod +x files/etc/uci-defaults/99-disable-zram
