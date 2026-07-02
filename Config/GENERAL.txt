@@ -34,8 +34,6 @@ CONFIG_PACKAGE_luci-app-dockerman=n
 CONFIG_PACKAGE_luci-app-podman=n
 CONFIG_PACKAGE_luci-app-usb-printer=n
 #删除插件
-CONFIG_PACKAGE_luci-app-sqm=n
-CONFIG_PACKAGE_sqm-scripts-nss=n
 CONFIG_PACKAGE_luci-app-wol=n
 CONFIG_PACKAGE_luci-app-attendedsysupgrade=n
 #参数调整
