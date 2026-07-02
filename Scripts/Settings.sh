@@ -38,11 +38,11 @@ rm -rf feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/stat
 sed -i 's/ECM://g' target/linux/qualcommax/base-files/sbin/cpuusage
 sed -i 's/HWE/NPU/g' target/linux/qualcommax/base-files/sbin/cpuusage
 # MT7981 PPE
-if grep -q "CONFIG_TARGET_.*mt7981=y" .config 2>/dev/null; then
-    echo "检测到MT7981平台，开始修改cpuusage脚本..."
+if grep -q -E "CONFIG_PACKAGE_.*mt7981.*=y" .config 2>/dev/null; then
+    echo "检测到当前编译目标为 MT7981 平台，开始修改 cpuusage 脚本..."
     sed -i 's|/sys/kernel/debug/ppe\*/entries|/sys/kernel/debug/ppe0/entries|g' target/linux/mediatek/filogic/base-files/sbin/cpuusage
-    sed -i '/name=\$(basename/c\name="PPE"' target/linux/mediatek/filogic/base-files/sbin/cpuusage
-    echo "PPE修改完成！"
+    sed -i 's|name=\$(basename.*|name="PPE"|g' target/linux/mediatek/filogic/base-files/sbin/cpuusage
+    echo "MT7981 PPE 修改完成！"
 fi
 #去掉luci后缀
 sed -i "s#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description : ''),#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
@@ -71,21 +71,9 @@ fi
 #高通平台调整
 DTS_PATH="./target/linux/qualcommax/dts/"
 if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
-	#取消nss相关feed
-	echo "CONFIG_FEED_nss_packages=n" >> ./.config
-	echo "CONFIG_FEED_sqm_scripts_nss=n" >> ./.config
-	#设置NSS版本
-	echo "CONFIG_NSS_FIRMWARE_VERSION_12_5=y" >> ./.config
-	#其他调整
-	echo "CONFIG_PACKAGE_kmod-usb-serial-qualcomm=y" >> ./.config
 	#无WIFI配置调整Q6大小
 	if [[ "${WRT_CONFIG,,}" == *"wifi"* && "${WRT_CONFIG,,}" == *"no"* ]]; then
 		find $DTS_PATH -type f ! -iname '*nowifi*' -exec sed -i 's/ipq\(6018\|8074\).dtsi/ipq\1-nowifi.dtsi/g' {} +
 		echo "qualcommax set up nowifi successfully!"
 	fi
 fi
-
-# 禁用zram自启
-mkdir -p files/etc/uci-defaults
-echo "/etc/init.d/zram disable" > files/etc/uci-defaults/99-disable-zram
-chmod +x files/etc/uci-defaults/99-disable-zram
