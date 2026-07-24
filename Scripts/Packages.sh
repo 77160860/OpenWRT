@@ -51,11 +51,6 @@ UPDATE_PACKAGE "argon" "sbwml/luci-theme-argon" "openwrt-25.12-legacy"
 UPDATE_PACKAGE "aurora" "eamonxg/luci-theme-aurora" "master"
 UPDATE_PACKAGE "aurora-config" "eamonxg/luci-app-aurora-config" "master"
 
-UPDATE_PACKAGE "sing-box" "77160860/OpenWRT" "main" "pkg"
-UPDATE_PACKAGE "luci-app-store" "linkease/istore" "main"
-UPDATE_PACKAGE "sqm-scripts-nss" "JuliusBairaktaris/sqm-scripts-nss" "main"
-UPDATE_PACKAGE "luci-app-podman" "Zerogiven-OpenWRT-Packages/luci-app-podman" "main"
-
 UPDATE_PACKAGE "momo" "nikkinikki-org/OpenWrt-momo" "main"
 UPDATE_PACKAGE "nikki" "nikkinikki-org/OpenWrt-nikki" "main"
 UPDATE_PACKAGE "openclash" "vernesong/OpenClash" "dev" "pkg"
@@ -73,6 +68,10 @@ UPDATE_PACKAGE "quickfile" "sbwml/luci-app-quickfile" "main"
 UPDATE_PACKAGE "timecontrol" "sirpdboy/luci-app-timecontrol" "main"
 UPDATE_PACKAGE "viking" "VIKINGYFY/packages" "main" "" "axonhub gecoosac luci-app-homeproxy luci-app-timewol luci-app-wolplus luci-app-wolultra"
 
+UPDATE_PACKAGE "sing-box" "77160860/OpenWRT" "main" "pkg"
+UPDATE_PACKAGE "luci-app-store" "linkease/istore" "main"
+UPDATE_PACKAGE "sqm-scripts-nss" "JuliusBairaktaris/sqm-scripts-nss" "main"
+UPDATE_PACKAGE "luci-app-podman" "Zerogiven-OpenWRT-Packages/luci-app-podman" "main"
 #更新软件包版本
 UPDATE_VERSION() {
 	local PKG_NAME=$1
