@@ -5,8 +5,8 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=sing-box
-PKG_VERSION:=1.14.0
-PKG_RELEASE:=1
+PKG_VERSION:=1.15.0
+PKG_RELEASE:=8
 PKG_NO_CHECKSUM:=1
 
 ifneq ($(findstring aarch64,$(ARCH)),)
