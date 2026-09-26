@@ -70,9 +70,9 @@ UPDATE_PACKAGE "timecontrol" "sirpdboy/luci-app-timecontrol" "main"
 UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
 UPDATE_PACKAGE "luci-app-gecoosac" "laipeng668/luci-app-gecoosac" "main"
 
-UPDATE_PACKAGE "sing" "77160860/luci-app-sing" "main"
+UPDATE_PACKAGE "luci-app-sing" "77160860/luci-app-sing" "main"
 UPDATE_PACKAGE "sing-box" "77160860/OpenWRT" "main" "pkg"
-UPDATE_PACKAGE "meta" "77160860/luci-app-meta" "main"
+UPDATE_PACKAGE "luci-app-meta" "77160860/luci-app-meta" "main"
 UPDATE_PACKAGE "mihomo" "77160860/OpenWRT" "main" "pkg"
 rm -rf ./OpenWrt-nikki/mihomo-meta ./OpenWrt-nikki/mihomo-alpha
 mkdir -p ./OpenWrt-nikki/mihomo-meta
