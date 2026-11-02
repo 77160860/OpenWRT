@@ -3,6 +3,7 @@ CONFIG_USE_APK=n
 CONFIG_PACKAGE_zoneinfo-asia=y
 CONFIG_PACKAGE_luci-mod-rpc=y
 CONFIG_PACKAGE_luci-app-store=y
+CONFIG_PACKAGE_luci-app-admask=y
 CONFIG_PACKAGE_block-mount=y # (挂载点)
 #科学插件调整
 CONFIG_PACKAGE_luci-app-sing=y
