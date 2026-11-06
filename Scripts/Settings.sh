@@ -80,19 +80,38 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 fi
 
 #修改luci首页显示
-sed -i '/Target Platform/d' feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#CPU 标签(兼容 _('CPU usage') 与 _('CPU usage (%)'))
+sed -i "s#_('CPU usage[^']*')#_('CPU使用率')#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#去掉"主机名"整行
+sed -i "/_('Hostname')/d" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#温度行索引前移(删掉主机名/目标平台后数组少了4个元素)
+sed -i "s#fields\.splice(6,[[:space:]]*0,[[:space:]]*_('Temperature'))#fields.splice(4, 0, _('Temperature'))#" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+sed -i "s#fields\.splice(7,[[:space:]]*0,[[:space:]]*tempinfo\.tempinfo)#fields.splice(5, 0, tempinfo.tempinfo)#" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#运行时长
+sed -i "s#_('Uptime')#_('运行时长')#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#本地时间去掉时区:timeStyle long/full 会带 GMT+8,medium 只留 时:分:秒
+sed -i "s#timeStyle:[^,]*,#timeStyle: 'medium',#" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#去掉"目标平台"整行
+sed -i "/_('Target Platform')/d" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+#内存精简 + 去掉存储
 sed -i '38,47d' feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/20_memory.js
 rm -rf feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/25_storage.js
-#usr+sys+nss
+#去掉luci版本后缀并显示年份
+sed -i "s#_('Firmware Version'), (L.isObject(boardinfo.release) ? boardinfo.release.description + ' / ' : '') + (luciversion || ''),#_('Firmware Version'), (L.isObject(boardinfo.release) ? (boardinfo.release.description || '').replace('SNAPSHOT r0', 'r$(date +%Y)') : ''),#g" feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js
+
+#usr+sys+nss+ecm
 if [ -f "target/linux/qualcommax/base-files/sbin/cpuusage" ]; then
 	cat << 'EOF' > target/linux/qualcommax/base-files/sbin/cpuusage
 #!/bin/sh
 read -r usr sys < <(top -bn1 | awk 'NR==2 {print $2, $4}')
-cpu_load="USR: ${usr} SYS: ${sys}"
+cpu_load="USR:${usr} SYS:${sys}"
 nss_load="$(awk 'NR == 6 { print $2; exit }' /sys/kernel/debug/qca-nss-drv/stats/cpu_load_ubi 2>/dev/null)"
-echo -n "${cpu_load} NSS: ${nss_load:-N/A}"
+nss_ecm="$(cat /sys/kernel/debug/ecm/ecm_db/connection_count_simple 2>/dev/null)"
+nss_ecm="${nss_ecm#(}"
+nss_ecm="${nss_ecm%)}"
+echo -n "${cpu_load} NSS:${nss_load:-N/A} (${nss_ecm:-N/A})"
 EOF
-echo "cpu状态已修改:usr+sys+nss"
+echo "cpu状态已修改:usr+sys+nss(ecm)"
 fi
 
 #filogic PPE显示:MT7981实际只有1个PPE,隐藏PPE1并把PPE0显示为PPE
