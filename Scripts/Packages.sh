@@ -71,7 +71,7 @@ UPDATE_PACKAGE "luci-app-tailscale" "asvow/luci-app-tailscale" "main"
 UPDATE_PACKAGE "luci-app-gecoosac" "laipeng668/luci-app-gecoosac" "main"
 UPDATE_PACKAGE "admask" "ilxp/admask-openwrt" "main" "pkg"
 
-UPDATE_PACKAGE "luci-mod-rpc" "77160860/luci-mod-rpc" "main" "pkg"
+UPDATE_PACKAGE "luci-mod-rpc" "77160860/OpenWRT" "main" "pkg"
 UPDATE_PACKAGE "luci-app-sing" "77160860/luci-app-sing" "main"
 UPDATE_PACKAGE "sing-box" "77160860/OpenWRT" "main" "pkg"
 UPDATE_PACKAGE "luci-app-meta" "77160860/luci-app-meta" "main"
