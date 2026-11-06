@@ -106,9 +106,17 @@ if [ -f "target/linux/qualcommax/base-files/sbin/cpuusage" ]; then
 read -r usr sys < <(top -bn1 | awk 'NR==2 {print $2, $4}')
 cpu_load="USR:${usr} SYS:${sys}"
 nss_load="$(awk 'NR == 6 { print $2; exit }' /sys/kernel/debug/qca-nss-drv/stats/cpu_load_ubi 2>/dev/null)"
-nss_ecm="$(cat /sys/kernel/debug/ecm/ecm_db/connection_count_simple 2>/dev/null)"
-nss_ecm="${nss_ecm#(}"
-nss_ecm="${nss_ecm%)}"
+nss_ecm="$(awk '
+{
+	gsub(/[()]/, "")
+	for (i = 1; i < NF; i++) {
+		if (tolower($i) == "tcp") tcp = $(i + 1)
+		if (tolower($i) == "udp") udp = $(i + 1)
+	}
+}
+END {
+		if (tcp != "" && udp != "") printf "TCP:%s UDP:%s", tcp, udp
+}' /sys/kernel/debug/ecm/ecm_db/connection_count_simple 2>/dev/null)"
 echo -n "${cpu_load} NSS:${nss_load:-N/A} (${nss_ecm:-N/A})"
 EOF
 echo "cpu状态已修改:usr+sys+nss(ecm)"
