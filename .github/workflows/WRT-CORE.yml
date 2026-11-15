@@ -68,7 +68,7 @@ env:
 jobs:
   core:
     name: ${{inputs.WRT_SOURCE}}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     outputs:
       cache_prefix: ${{steps.initialize-values.outputs.cache_prefix}}
       cache_key: ${{steps.clone-code.outputs.cache_key}}
@@ -145,6 +145,17 @@ jobs:
           echo "cache_key=$WRT_CACHE_PREFIX-$WRT_HASH" >> "$GITHUB_OUTPUT"
           echo "source_hash=$WRT_FULL_HASH" >> "$GITHUB_OUTPUT"
 
+          LOG_DIR="$GITHUB_WORKSPACE/build-logs"
+          mkdir -p "$LOG_DIR"
+          printf 'source_label=%s\nsource_branch=%s\nsource_commit=%s\nconfig_profile=%s\n' \
+            "$WRT_SOURCE" "$WRT_BRANCH" "$WRT_FULL_HASH" "$WRT_CONFIG" > "$LOG_DIR/identity.txt"
+          {
+            echo '### Checked-out source'
+            echo '```text'
+            cat "$LOG_DIR/identity.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
           # GitHub Action 移除国内下载源
           PROJECT_MIRRORS_FILE="./scripts/projectsmirrors.json"
           if [ -f "$PROJECT_MIRRORS_FILE" ]; then
@@ -205,6 +216,49 @@ jobs:
 
           make defconfig -j$(nproc) && make clean -j$(nproc)
 
+      - name: Record Build Identity
+        if: ${{ always() && steps.clone-code.outcome == 'success' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ./wrt/
+          LOG_DIR="$GITHUB_WORKSPACE/build-logs"
+          DRIVER_DIR="package/qca-nss/qca-nss-drv"
+          {
+            printf '\n[NSS configuration]\n'
+            if [ -f .config ]; then
+              sed -nE '/^CONFIG_TARGET[^=]*=y$/p; /^CONFIG_NSS_(FIRMWARE_VERSION|MEM_PROFILE)/p; /^# CONFIG_NSS_(FIRMWARE_VERSION|MEM_PROFILE).* is not set$/p; /^CONFIG_PACKAGE_(kmod-qca-nss-drv|nss-firmware)(=|-)/p' .config
+            fi
+            if [ -f "$DRIVER_DIR/Makefile" ]; then
+              SELECTED_RECIPE="$DRIVER_DIR/Makefile"
+              if [ -f .config ] && [ -f "$DRIVER_DIR/Makefile.11.4" ] && grep -qx 'CONFIG_NSS_FIRMWARE_VERSION_11_4=y' .config; then
+                SELECTED_RECIPE="$DRIVER_DIR/Makefile.11.4"
+              fi
+              printf 'selected_driver_recipe=%s\n' "$SELECTED_RECIPE"
+            fi
+            for RECIPE in "$DRIVER_DIR/Makefile" "$DRIVER_DIR/Makefile.11.4"; do
+              printf '\n[%s]\n' "$RECIPE"
+              if [ -f "$RECIPE" ]; then
+                sha256sum "$RECIPE"
+                sed -nE '/^[[:space:]]*(PKG_NAME|PKG_RELEASE|PKG_SOURCE_DATE|PKG_SOURCE_VERSION|QSDK_VERSION|PKG_VERSION|PATCH_DIR)[[:space:]]*[:?+]?=/p; /NSS_FIRMWARE_VERSION|Makefile[.]11[.]4/p' "$RECIPE"
+              else
+                echo 'not present'
+              fi
+            done
+            printf '\n[driver patch sha256]\n'
+            for PATCH_DIR in "$DRIVER_DIR/patches" "$DRIVER_DIR/patches-11.4"; do
+              if [ -d "$PATCH_DIR" ]; then
+                find "$PATCH_DIR" -maxdepth 1 -type f -name '*.patch' -print0 | sort -z | xargs -0 -r sha256sum
+              fi
+            done
+          } >> "$LOG_DIR/identity.txt"
+          {
+            echo '### Build identity and NSS selection'
+            echo '```text'
+            cat "$LOG_DIR/identity.txt"
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Download Packages
         if: ${{ !inputs.WRT_TEST }}
         run: |
@@ -213,13 +267,54 @@ jobs:
           make download -j$(nproc)
 
       - name: Compile Firmware
+        id: compile-firmware
         if: ${{ !inputs.WRT_TEST }}
+        shell: bash
         run: |
+          set -euo pipefail
           cd ./wrt/
-
-          make -j$(nproc) || make -j1 V=s
+          LOG_DIR="$GITHUB_WORKSPACE/build-logs"
+          mkdir -p "$LOG_DIR"
+          redact_log() {
+            perl -pe 'for $key (qw(GITHUB_TOKEN GH_TOKEN GH_ENTERPRISE_TOKEN)) { $value = $ENV{$key}; s/\Q$value\E/[REDACTED]/g if defined($value) && length($value); }'
+          }
+          if make -j"$(nproc)" 2>&1 | redact_log | tee "$LOG_DIR/full-build-parallel.log"; then
+            :
+          else
+            make -j1 V=sc 2>&1 | redact_log | tee "$LOG_DIR/full-build-serial.log"
+          fi
 
           echo "WRT_KVER=$(find ./bin/targets/ -type f -name "*.manifest" -exec grep -oP '^kernel - \K[\d\.]+' {} \;)" >> $GITHUB_ENV
+      - name: Diagnose NSS Driver
+        if: ${{ failure() && steps.compile-firmware.outcome == 'failure' && env.WRT_TARGET == 'qualcommax' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd ./wrt/
+          LOG_DIR="$GITHUB_WORKSPACE/build-logs"
+          mkdir -p "$LOG_DIR"
+          if [ ! -f package/qca-nss/qca-nss-drv/Makefile ] || ! grep -Eq '^CONFIG_PACKAGE_kmod-qca-nss-drv=(y|m)$' .config; then
+            echo 'NSS diagnosis skipped: built-in driver absent or not selected.' | tee "$LOG_DIR/qca-nss-diagnostic.log"
+            exit 0
+          fi
+          redact_log() {
+            perl -pe 'for $key (qw(GITHUB_TOKEN GH_TOKEN GH_ENTERPRISE_TOKEN)) { $value = $ENV{$key}; s/\Q$value\E/[REDACTED]/g if defined($value) && length($value); }'
+          }
+          # Only disable errexit locally to capture the actual make exit codes.
+          set +e
+          make package/qca-nss/qca-nss-drv/clean -j1 2>&1 | redact_log | tee "$LOG_DIR/qca-nss-clean.log"
+          CLEAN_RESULT=("${PIPESTATUS[@]}")
+          COMPILE_RC=not-run
+          RESULT="${CLEAN_RESULT[0]}"
+          if [ "$RESULT" -eq 0 ]; then
+            make package/qca-nss/qca-nss-drv/compile -j1 V=sc 2>&1 | redact_log | tee "$LOG_DIR/qca-nss-compile.log"
+            COMPILE_RESULT=("${PIPESTATUS[@]}")
+            COMPILE_RC="${COMPILE_RESULT[0]}"
+            RESULT="$COMPILE_RC"
+          fi
+          printf 'clean_exit=%s\ncompile_exit=%s\n' "${CLEAN_RESULT[0]}" "$COMPILE_RC" | tee "$LOG_DIR/qca-nss-result.txt"
+          exit "$RESULT"
+
       - name: Check Cache Source
         id: cache-source
         if: ${{ !inputs.WRT_TEST && success() }}
@@ -296,6 +391,15 @@ jobs:
 
             内核版本：${{env.WRT_KVER}}
             插件列表：${{env.WRT_LIST}}
+
+      - name: Upload Build Logs
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs-${{ env.WRT_CACHE_PREFIX }}-${{ inputs.WRT_CONFIG }}-${{ github.run_attempt }}
+          path: ${{ github.workspace }}/build-logs/
+          if-no-files-found: warn
+          retention-days: 7
 
   cache-rollover:
     name: Roll cache generations
